@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Angular CodeSchool</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" media="screen" title="no title" charset="utf-8">
+</head>
+<!-- Début de l'application de visualisation des produits -->
+<body ng-app="gemStore">
+  <div ng-controller="StoreController as store">
+    <!-- Affiche la liste des produits -->
+    <div class="col-lg-4" ng-repeat='product in store.products'>
+      <h1> {{product.name}} </h1>
+      <h2>{{product.price | currency}}</h2>
+      <!-- Le produit est visible si il est en stock -->
+      <button ng-show="product.canPurchase">ajouter</button>
+      <section ng-controller="TabController as tabCtrl">
+        <ul class="nav nav-pills">
+          <!-- Si tab == 1 met la classe 'active' à la balise-->
+          <li ng-class="{ active:tabCtrl.isSelect(1) }">
+            <!-- Change la valeur de tab == 1 au clic -->
+            <a href ng-click="tabCtrl.selectTab(1)">Description</a>
+          </li>
+          <li ng-class="{ active:tabCtrl.isSelect(2) }">
+            <a href ng-click="tabCtrl.selectTab(2)">Spécifications</a>
+          </li>
+          <li ng-class="{ active:tabCtrl.isSelect(3) }">
+            <a href ng-click="tabCtrl.selectTab(3)">Review</a>
+          </li>
+        </ul>
+        {{tabCtrl.tab}}
+        <!-- Si la valeur tab == 1, montre la description du produit-->
+        <div product-Description ng-include="'product-Description.html'" class="panel" ng-show="tabCtrl.isSelect(1)">
+
+        </div>
+
+        <div class="panel" ng-show="tabCtrl.isSelect(2)">
+          <p>Ras</p>
+        </div>
+
+        <div class="panel" ng-show="tabCtrl.isSelect(3)">
+          <ul>
+            <h4>Reviews</h4>
+            <!-- Liste des reviews de tout les utilisateurs -->
+            <li ng-repeat="review in product.reviews">
+              <blockquote>
+                <strong>{{review.stars}} Stars</strong>
+                {{review.body}}
+                <cite class="clearfix">—{{review.author}}{{review.createdOn | date:'MM/dd/yyyy'}}</cite>
+              </blockquote>
+            </li>
+          </ul>
+          <form name="reviewForm" ng-controller="ReviewController as reviewCtrl" ng-submit="reviewForm.$valid && reviewCtrl.addReview(product)" novalidate>
+            <!-- Preview commentaire de l'utilisateur dynamiquement-->
+            <blockquote>
+              <strong>{{reviewCtrl.review.stars}} Stars</strong>
+              {{reviewCtrl.review.body}}
+              <cite class="clearfix">—{{reviewCtrl.review.author}}  {{review.createdOn | date:' MM/dd/yyyy  '}}</cite>
+            </blockquote>
+
+            <!--  Formulaire d'envoi de review -->
+            <h4>Submit a Review</h4>
+            <fieldset class="form-group">
+              <select ng-model="reviewCtrl.review.stars" class="form-control" ng-options="stars for stars in [5,4,3,2,1]" title="Stars" required>
+                <option value="">Rate the Product</option>
+              </select>
+            </fieldset>
+            <fieldset class="form-group">
+              <textarea ng-model="reviewCtrl.review.body" class="form-control" placeholder="Write a short review of the product..." title="Review"></textarea>
+            </fieldset>
+            <fieldset class="form-group">
+              <input ng-model="reviewCtrl.review.author" type="email" class="form-control" placeholder="jimmyDean@example.org" title="Email" required/>
+            </fieldset>
+            <fieldset class="form-group">
+              <input type="submit" class="btn btn-primary pull-right" value="Submit Review" />
+            </fieldset>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+  <script src="bower_components/angular/angular.min.js" type="text/javascript"></script>
+  <script src="index.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+  <ul class="nav nav-pills">
+    <!-- Si tab == 1 met la classe 'active' à la balise-->
+    <li ng-class="{ active:tabCtrl.isSelect(1) }">
+      <!-- Change la valeur de tab == 1 au clic -->
+      <a href ng-click="tabCtrl.selectTab(1)">Description</a>
+    </li>
+    <li ng-class="{ active:tabCtrl.isSelect(2) }">
+      <a href ng-click="tabCtrl.selectTab(2)">Spécifications</a>
+    </li>
+    <li ng-class="{ active:tabCtrl.isSelect(3) }">
+      <a href ng-click="tabCtrl.selectTab(3)">Review</a>
+    </li>
+  </ul>
+  {{tabCtrl.tab}}
+  <!-- Si la valeur tab == 1, show la balise -->
+  <div product-Description ng-include="'product-Description.html'" class="panel" ng-show="tabCtrl.isSelect(1)">
+  </div>
+
+  <div class="panel" ng-show="tabCtrl.isSelect(2)">
+    <p>Ras</p>
+  </div>
+
+  <div class="panel" ng-show="tabCtrl.isSelect(3)">
+    <form-review></form-review>
+  </div>
